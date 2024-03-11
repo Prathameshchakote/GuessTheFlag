@@ -45,18 +45,17 @@ struct ContentView: View {
                                 flagTapped(number)
                                 
                             } label: {
-                                Image(countries[number])
-                                    .clipShape(.buttonBorder)
-                                    .shadow(radius: 10)
+                                FlagImage(flagname: countries[number])
                             }
                             
                         }
                     }
-                    .frame(maxWidth: .infinity)
-                    .padding(.vertical, 20)
-                    .background(.regularMaterial)
-                    .clipShape(.rect(cornerRadius: 20))
+                    .innerStackStyle()
+                    
+                    // If not added in view extension
+//                    .modifier(innerStackView())
                 }
+
                 Text("Score: \(score)")
                     .foregroundStyle(.white)
                     .font(.title.bold())
@@ -115,6 +114,32 @@ struct ContentView: View {
     func resetGame() {
         score = 0
         askQuestion()
+    }
+}
+
+struct FlagImage: View {
+    var flagname: String
+    
+    var body: some View {
+        Image(flagname)
+            .clipShape(.buttonBorder)
+            .shadow(radius: 10)
+    }
+}
+
+struct innerStackView: ViewModifier {
+    func body(content: Content) -> some View {
+        content
+            .frame(maxWidth: .infinity)
+            .padding(.vertical, 20)
+            .background(.regularMaterial)
+            .clipShape(.rect(cornerRadius: 20))
+    }
+}
+
+extension View {
+    func innerStackStyle() -> some View {
+        modifier(innerStackView())
     }
 }
 
